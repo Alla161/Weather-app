@@ -54,4 +54,4 @@ REACT_APP_OPEN_WEATHER_BASE_URL=https://api.openweathermap.org/data/2.5
 Приложение можно задеплоить, например, на Vercel или Netlify.  
 После деплоя добавь сюда ссылку:
 
-> Live demo: `https://your-app-name.vercel.app`
+> Live demo: `[https://your-app-name.vercel.app]`
