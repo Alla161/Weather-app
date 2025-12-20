@@ -29,7 +29,7 @@ export function HourlyForecast({ location, units }) {
             longitude: location.lon,
             timezone: 'auto',
             hourly: 'temperature_2m,weathercode',
-            // можно добавить temperature_unit, если захочешь получать сразу в °F
+            
           },
         }
       );
