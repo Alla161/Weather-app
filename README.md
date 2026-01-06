@@ -43,6 +43,7 @@ npm run preview
 Тестирование
 npm test
 
+<<<<<<< HEAD
 Структура проекта
 src/
   App.jsx
@@ -67,3 +68,25 @@ src/
   utils/
     getWeatherIconByCode.js
     getWeatherBackgroundByCode.js
+=======
+## Структура проекта (основное)
+
+- `src/App.jsx` — главный компонент приложения.
+- `src/components/CitySearch.jsx` — поиск города и выбор локации.
+- `src/components/OpenWeather.jsx` — блок текущей погоды.
+- `src/components/HourlyForecast.jsx` — почасовой прогноз.
+- `src/components/WeatherForecast.jsx` — прогноз на несколько дней.
+- `src/components/AirQuality.jsx` — качество воздуха.
+- `src/components/History.jsx` — история последних городов.
+- `src/components/Favorites.jsx` — избранные города.
+- `src/components/SkeletonCard.jsx` — скелетоны загрузки.
+- `src/hooks/useLocationHistory.js` — кастомный хук для истории.
+- `src/confing/keyConst.js` — константы и ключи.
+
+## Деплой
+
+Приложение можно задеплоить, например, на Vercel или Netlify.  
+После деплоя добавь сюда ссылку:
+
+> Live demo: `[https://your-app-name.vercel.app]`
+>>>>>>> af8f1050dad9fd7caccb236bdeab6d868f6d3813
