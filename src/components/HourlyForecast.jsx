@@ -8,6 +8,7 @@ import {
 } from '../utils/getWeatherIcon';
 import { ErrorCard } from './ErrorCard';
 
+
 export function HourlyForecast({ location, units }) {
   const [items, setItems] = useState([]);
   const [error, setError] = useState('');
@@ -21,20 +22,17 @@ export function HourlyForecast({ location, units }) {
     setItems([]);
 
     try {
-      const res = await axios.get(
-        'https://api.open-meteo.com/v1/forecast',
-        {
-          params: {
-            latitude: location.lat,
-            longitude: location.lon,
-            timezone: 'auto',
-            hourly: 'temperature_2m,weathercode',
-            
-          },
-        }
-      );
+      const res = await axios.get('https://api.open-meteo.com/v1/forecast', {
+        params: {
+          latitude: location.lat,
+          longitude: location.lon,
+          timezone: 'auto',
+          hourly: 'temperature_2m,weathercode',
+        },
+      });
 
       const hourly = res.data.hourly;
+
       if (
         !hourly ||
         !hourly.time ||
@@ -81,12 +79,7 @@ export function HourlyForecast({ location, units }) {
   }
 
   if (error) {
-    return (
-      <ErrorCard
-        message={error}
-        onRetry={fetchHourly}
-      />
-    );
+    return <ErrorCard message={error} onRetry={fetchHourly} />;
   }
 
   if (!items.length) return null;
@@ -95,7 +88,7 @@ export function HourlyForecast({ location, units }) {
 
   return (
     <div className="mt-6">
-      <h2 className="text-lg font-semibold mb-2">
+      <h2 className="text-lg font-semibold mb-2 text-slate-900 dark:text-slate-100">
         Почасовой прогноз (24 часа)
       </h2>
 
@@ -108,28 +101,33 @@ export function HourlyForecast({ location, units }) {
 
           const label =
             WEATHER_CODE_LABELS[item.weathercode] || 'Погода';
+
           const iconEmoji = getWeatherIconByCode
             ? getWeatherIconByCode(item.weathercode)
             : '🌡️';
+
           const bgClass = getWeatherBackgroundByCode
             ? getWeatherBackgroundByCode(item.weathercode)
-            : 'bg-slate-700';
+            : 'bg-slate-200 dark:bg-slate-700';
 
           const tempValue =
             units === 'metric'
               ? item.temp
-              : item.temp * 1.8 + 32; // C -> F
+              : item.temp * 1.8 + 32;
 
           return (
             <div
               key={item.time.toISOString()}
               className={`
-                ${bgClass} rounded-lg p-3 flex flex-col items-center text-center
+                ${bgClass}
+                rounded-lg p-3 flex flex-col items-center text-center
+                text-slate-900 dark:text-slate-100
+                border border-slate-200 dark:border-slate-600
                 transition-transform transition-shadow duration-200
                 hover:-translate-y-0.5 hover:shadow-md
               `}
             >
-              <div className="text-slate-200 mb-1">
+              <div className="text-[11px] mb-1 text-slate-700 dark:text-slate-200">
                 {hourLabel}
               </div>
               <div className="text-xl mb-1">
@@ -138,7 +136,7 @@ export function HourlyForecast({ location, units }) {
               <div className="font-semibold mb-1">
                 {Math.round(tempValue)}°{tempUnitLabel}
               </div>
-              <div className="text-[10px] text-slate-200">
+              <div className="text-[10px] text-slate-700 dark:text-slate-200">
                 {label}
               </div>
             </div>

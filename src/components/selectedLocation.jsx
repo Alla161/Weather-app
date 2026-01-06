@@ -47,19 +47,21 @@ export function Favorites({ selectedLocation, onSelect }) {
     });
   };
 
-  const isCurrentFavorite = !!selectedLocation && favorites.some(
-    (item) =>
-      item.lat === selectedLocation.lat &&
-      item.lon === selectedLocation.lon &&
-      item.label === selectedLocation.label
-  );
+  const isCurrentFavorite =
+    !!selectedLocation &&
+    favorites.some(
+      (item) =>
+        item.lat === selectedLocation.lat &&
+        item.lon === selectedLocation.lon &&
+        item.label === selectedLocation.label
+    );
 
   return (
     <div className="mb-3">
       {selectedLocation && (
         <div className="flex justify-center mb-2">
           <button
-            className="px-3 py-1 text-xs rounded-full border border-slate-500 text-slate-200 hover:bg-slate-700"
+            className="px-3 py-1 text-xs rounded-full border border-slate-300 dark:border-slate-500 text-slate-800 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors"
             onClick={toggleFavorite}
           >
             {isCurrentFavorite ? 'Убрать из избранного' : 'В избранное'}
@@ -69,7 +71,7 @@ export function Favorites({ selectedLocation, onSelect }) {
 
       {favorites.length > 0 && (
         <>
-          <h2 className="text-xs uppercase tracking-wide text-slate-400 mb-1">
+          <h2 className="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 mb-1">
             Избранные города
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -77,13 +79,13 @@ export function Favorites({ selectedLocation, onSelect }) {
               <button
                 key={`${item.lat}-${item.lon}-fav`}
                 className={`
-                  px-2 py-1 text-xs rounded-full border
+                  px-2 py-1 text-xs rounded-full border transition-colors
                   ${
                     selectedLocation &&
                     item.lat === selectedLocation.lat &&
                     item.lon === selectedLocation.lon
                       ? 'bg-amber-400 text-slate-900 border-amber-400'
-                      : 'border-slate-600 text-slate-200 hover:bg-slate-700'
+                      : 'bg-slate-200 border-slate-300 text-slate-800 hover:bg-slate-300 hover:border-slate-400 dark:bg-slate-700 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-600'
                   }
                 `}
                 onClick={() => onSelect(item)}

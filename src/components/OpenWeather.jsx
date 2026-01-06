@@ -5,7 +5,7 @@ import { WEATHER_CODE_LABELS } from '../confing/keyConst';
 import { getWeatherBackgroundByCode, getWeatherIconByCode } from '../utils/getWeatherIcon';
 import { ErrorCard } from './ErrorCard';
 
-export function OpenWeather({ location, units }) {
+export function OpenWeather({ location, units, onTimeUpdate }) {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -18,20 +18,18 @@ export function OpenWeather({ location, units }) {
     setWeather(null);
 
     try {
-      const res = await axios.get(
-        'https://api.open-meteo.com/v1/forecast',
-        {
-          params: {
-            latitude: location.lat,
-            longitude: location.lon,
-            timezone: 'auto',
-            current: 'temperature_2m,wind_speed_10m,weather_code',
-
-          },
-        }
-      );
+      const res = await axios.get('https://api.open-meteo.com/v1/forecast', {
+        params: {
+          latitude: location.lat,
+          longitude: location.lon,
+          timezone: 'auto',
+          current: 'temperature_2m,wind_speed_10m,weather_code',
+        },
+      });
 
       const current = res.data.current;
+      const timezone = res.data.timezone;
+
       if (!current) {
         setError('Нет данных о текущей погоде');
         return;
@@ -43,12 +41,19 @@ export function OpenWeather({ location, units }) {
         windSpeed: current.wind_speed_10m,
         weatherCode: current.weather_code,
       });
+
+      if (onTimeUpdate && current.time) {
+        onTimeUpdate({
+          iso: current.time,
+          timezone,
+        });
+      }
     } catch (err) {
       setError('Не удалось загрузить текущую погоду');
     } finally {
       setLoading(false);
     }
-  }, [location]);
+  }, [location, onTimeUpdate]);
 
   useEffect(() => {
     fetchWeather();
@@ -56,7 +61,7 @@ export function OpenWeather({ location, units }) {
 
   if (!location) {
     return (
-      <p className="text-slate-300 text-sm">
+      <p className="text-sm text-slate-600 dark:text-slate-300">
         Выберите город, чтобы увидеть погоду.
       </p>
     );
@@ -67,37 +72,27 @@ export function OpenWeather({ location, units }) {
   }
 
   if (error) {
-    return (
-      <ErrorCard
-        message={error}
-        onRetry={fetchWeather}
-      />
-    );
+    return <ErrorCard message={error} onRetry={fetchWeather} />;
   }
 
   if (!weather) return null;
 
-  const desc =
-    WEATHER_CODE_LABELS[weather.weatherCode] || 'Погода';
+  const desc = WEATHER_CODE_LABELS[weather.weatherCode] || 'Погода';
 
+  // фон по коду погоды + light/dark
   const bgClass = getWeatherBackgroundByCode
     ? getWeatherBackgroundByCode(weather.weatherCode)
-    : 'bg-slate-700';
+    : 'bg-slate-200 dark:bg-slate-700';
 
   const iconEmoji = getWeatherIconByCode
     ? getWeatherIconByCode(weather.weatherCode)
     : '🌡️';
 
- 
   const tempValue =
-    units === 'metric'
-      ? weather.temp
-      : weather.temp * 1.8 + 32; 
+    units === 'metric' ? weather.temp : weather.temp * 1.8 + 32;
 
   const windValue =
-    units === 'metric'
-      ? weather.windSpeed
-      : weather.windSpeed * 2.23694; 
+    units === 'metric' ? weather.windSpeed : weather.windSpeed * 2.23694;
 
   const tempUnitLabel = units === 'metric' ? 'C' : 'F';
   const windUnitLabel = units === 'metric' ? 'м/с' : 'mph';
@@ -106,6 +101,8 @@ export function OpenWeather({ location, units }) {
     <div
       className={`
         mt-2 p-4 rounded-xl shadow-inner ${bgClass}
+        text-slate-900 dark:text-slate-100
+        border border-slate-200 dark:border-slate-600
         transition-transform transition-shadow duration-200
         hover:-translate-y-0.5 hover:shadow-lg
       `}
@@ -118,7 +115,7 @@ export function OpenWeather({ location, units }) {
           <div className="text-4xl font-bold">
             {Math.round(tempValue)}°{tempUnitLabel}
           </div>
-          <div className="capitalize">
+          <div className="capitalize text-sm text-slate-700 dark:text-slate-200">
             {desc}
           </div>
         </div>

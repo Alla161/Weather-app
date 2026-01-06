@@ -26,7 +26,6 @@ export function WeatherForecast({ location, units }) {
             longitude: location.lon,
             timezone: 'auto',
             daily: 'temperature_2m_max,temperature_2m_min,weathercode',
-            
           },
         }
       );
@@ -78,7 +77,7 @@ export function WeatherForecast({ location, units }) {
 
   return (
     <div className="mt-6">
-      <h2 className="text-lg font-semibold mb-2">
+      <h2 className="text-lg font-semibold mb-2 text-slate-900 dark:text-slate-100">
         Прогноз на несколько дней
       </h2>
       <div className="grid grid-cols-2 gap-3">
@@ -99,7 +98,7 @@ export function WeatherForecast({ location, units }) {
 
           const bgClass = getWeatherBackgroundByCode
             ? getWeatherBackgroundByCode(item.weathercode)
-            : 'bg-slate-700';
+            : 'bg-slate-200 dark:bg-slate-700';
 
           const tempMax =
             units === 'metric'
@@ -115,24 +114,27 @@ export function WeatherForecast({ location, units }) {
             <div
               key={item.date}
               className={`
-                ${bgClass} rounded-lg p-3 flex flex-col items-center text-center
+                ${bgClass}
+                rounded-lg p-3 flex flex-col items-center text-center
+                text-slate-900 dark:text-slate-100
+                border border-slate-200 dark:border-slate-600
                 transition-transform transition-shadow duration-200
                 hover:-translate-y-0.5 hover:shadow-md
               `}
             >
-              <div className="text-sm text-slate-200 mb-1">
+              <div className="text-sm mb-1 text-slate-700 dark:text-slate-200">
                 {day}
               </div>
               <div className="text-2xl mb-1">
                 {iconEmoji}
               </div>
-              <div className="text-xs capitalize text-slate-200 mb-1">
+              <div className="text-xs capitalize mb-1 text-slate-700 dark:text-slate-200">
                 {label}
               </div>
               <div className="text-lg font-semibold">
                 {Math.round(tempMax)}°{tempUnitLabel}
               </div>
-              <div className="text-xs text-slate-200">
+              <div className="text-xs text-slate-700 dark:text-slate-200">
                 Мин: {Math.round(tempMin)}°{tempUnitLabel}
               </div>
             </div>

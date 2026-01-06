@@ -7,17 +7,17 @@ import { ErrorCard } from './ErrorCard';
 function getAqiLabel(aqi) {
   switch (aqi) {
     case 1:
-      return { text: 'Хорошее', color: 'text-emerald-300' };
+      return { text: 'Хорошее', color: 'text-emerald-500 dark:text-emerald-300' };
     case 2:
-      return { text: 'Удовлетворительное', color: 'text-lime-300' };
+      return { text: 'Удовлетворительное', color: 'text-lime-500 dark:text-lime-300' };
     case 3:
-      return { text: 'Умеренное', color: 'text-yellow-300' };
+      return { text: 'Умеренное', color: 'text-yellow-600 dark:text-yellow-300' };
     case 4:
-      return { text: 'Плохое', color: 'text-orange-300' };
+      return { text: 'Плохое', color: 'text-orange-600 dark:text-orange-300' };
     case 5:
-      return { text: 'Очень плохое', color: 'text-red-300' };
+      return { text: 'Очень плохое', color: 'text-red-600 dark:text-red-300' };
     default:
-      return { text: 'Нет данных', color: 'text-slate-300' };
+      return { text: 'Нет данных', color: 'text-slate-600 dark:text-slate-300' };
   }
 }
 
@@ -80,7 +80,7 @@ export function AirQuality({ location }) {
   const c = data.components || {};
 
   return (
-    <div className="mt-6 bg-slate-700 rounded-lg p-4 transition-transform duration-150 hover:-translate-y-0.5">
+    <div className="mt-6 rounded-lg p-4 bg-slate-100 dark:bg-slate-700 transition-transform duration-150 hover:-translate-y-0.5 border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-slate-100">
       <h2 className="text-lg font-semibold mb-1">
         Качество воздуха
       </h2>
@@ -90,7 +90,7 @@ export function AirQuality({ location }) {
           {aqi} — {aqiInfo.text}
         </span>
       </div>
-      <div className="grid grid-cols-3 gap-2 text-xs text-slate-200">
+      <div className="grid grid-cols-3 gap-2 text-xs text-slate-800 dark:text-slate-200">
         <div>
           <div className="font-semibold">PM2.5</div>
           <div>{c.pm2_5} µg/m³</div>
