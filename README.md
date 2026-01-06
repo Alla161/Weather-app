@@ -1,57 +1,69 @@
-# Weather Dashboard
+# WeatherNow — прогноз погоды по городам
 
-Небольшое, но функциональное приложение-панель погоды на React: текущая погода, почасовой прогноз, прогноз на несколько дней и качество воздуха для выбранного города.
+Одностраничное веб‑приложение прогноза погоды: текущие условия, почасовой и дневной прогноз, качество воздуха и местное время для любых городов. [web:100][web:104]
 
-## Функционал
+## Демо
 
-- Поиск города и выбор локации по подсказкам.
-- Текущая погода с иконкой, описанием и скоростью ветра.
-- Почасовой прогноз на 24 часа.
-- Прогноз на несколько дней.
-- Качество воздуха (AQI и основные загрязнители).
-- История последних запросов (выбор города в один клик).
-- Избранные города (закрепление важных локаций).
-- Переключатель единиц измерения: °C/м/с и °F/mph.
-- Адаптивный интерфейс с Tailwind CSS и плавными анимациями.
+- GitHub Pages: https://Alla161.github.io/Weather-app
 
-## Технологии
+## Стек
 
-- React (функциональные компоненты, хуки).
-- Tailwind CSS.
-- Axios для работы с HTTP-запросами.
-- Open-Meteo API (текущая погода, почасовой и дневной прогноз).
-- OpenWeather Air Pollution API (качество воздуха).
-- LocalStorage для истории и избранных городов.
+- **Frontend:** React, Vite, JavaScript (ES6+)
+- **Стили:** Tailwind CSS (light/dark тема)
+- **HTTP:** axios
+- **Тесты:** Vitest, @testing-library/react, @testing-library/jest-dom
+- **API:** Open‑Meteo, OpenWeather (air pollution API) [web:100][web:107]
 
-## Запуск локально
-установка зависимостей
+## Основные возможности
+
+- Поиск города и отображение:
+  - текущей температуры, состояния, ветра;
+  - почасового прогноза на 24 часа;
+  - прогноза на несколько дней.
+- Блок «местное время» с тикающими часами по данным API (кастомный хук `useCityClock`).
+- Качество воздуха (AQI) и ключевые показатели (PM2.5, PM10, NO₂, O₃, SO₂, CO).
+- История запросов и избранные города с сохранением в `localStorage`.
+- Переключатель единиц измерения (°C/м/с ↔ °F/mph).
+- Переключатель светлой/тёмной темы с сохранением выбора пользователя. [web:100][web:107]
+
+## Локальный запуск
+
+```bash
+git clone https://github.com/Alla161/Weather-app.git
+cd Weather-app
 npm install
 
-запуск dev-сервера
-npm start
+# режим разработки
+npm run dev
 
-Создай файл `.env` в корне проекта и добавь туда ключи API (пример):
+# продакшн-сборка
+npm run build
+npm run preview
 
-REACT_APP_OPEN_WEATHER_API_KEY=твой_ключ
-REACT_APP_OPEN_WEATHER_BASE_URL=https://api.openweathermap.org/data/2.5
+Тестирование
+npm test
 
-## Структура проекта (основное)
-
-- `src/App.jsx` — главный компонент приложения.
-- `src/components/CitySearch.jsx` — поиск города и выбор локации.
-- `src/components/OpenWeather.jsx` — блок текущей погоды.
-- `src/components/HourlyForecast.jsx` — почасовой прогноз.
-- `src/components/WeatherForecast.jsx` — прогноз на несколько дней.
-- `src/components/AirQuality.jsx` — качество воздуха.
-- `src/components/History.jsx` — история последних городов.
-- `src/components/Favorites.jsx` — избранные города.
-- `src/components/SkeletonCard.jsx` — скелетоны загрузки.
-- `src/hooks/useLocationHistory.js` — кастомный хук для истории.
-- `src/confing/keyConst.js` — константы и ключи.
-
-## Деплой
-
-Приложение можно задеплоить, например, на Vercel или Netlify.  
-После деплоя добавь сюда ссылку:
-
-> Live demo: `https://your-app-name.vercel.app`
+Структура проекта
+src/
+  App.jsx
+  main.jsx
+  index.css
+  components/
+    Header.jsx
+    Footer.jsx
+    CitySearch.jsx
+    Favorites.jsx
+    History.jsx
+    OpenWeather.jsx
+    HourlyForecast.jsx
+    WeatherForecast.jsx
+    AirQuality.jsx
+    LocalTimeBlock.jsx
+    SkeletonCard.jsx
+  hooks/
+    useTheme.js
+    useCityClock.js
+    useLocationHistory.js
+  utils/
+    getWeatherIconByCode.js
+    getWeatherBackgroundByCode.js
