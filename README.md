@@ -1,92 +1,49 @@
-# WeatherNow — прогноз погоды по городам
+WeatherNow — погода и местное время по городам
+Одностраничное React + Vite веб‑приложение прогноза погоды: текущие условия, почасовой и дневной прогноз, качество воздуха и местное время для любых городов.
 
-Одностраничное веб‑приложение прогноза погоды: текущие условия, почасовой и дневной прогноз, качество воздуха и местное время для любых городов. [web:100][web:104]
+Демо: https://alla161.github.io/Weather-app/
 
-## Демо
+Стек: React, Vite, Tailwind CSS, Axios, react-i18next, GitHub Pages.
+​
 
-- GitHub Pages: https://Alla161.github.io/Weather-app
+Основные возможности
+Поиск города с подсказками (геокодинг через Open‑Meteo Geocoding API).
 
-## Стек
+Текущая погода: температура, описание состояния, скорость ветра.
 
-- **Frontend:** React, Vite, JavaScript (ES6+)
-- **Стили:** Tailwind CSS (light/dark тема)
-- **HTTP:** axios
-- **Тесты:** Vitest, @testing-library/react, @testing-library/jest-dom
-- **API:** Open‑Meteo, OpenWeather (air pollution API) [web:100][web:107]
+Почасовой прогноз на 24 часа.
 
-## Основные возможности
+Прогноз на 5 дней с максимальной и минимальной температурой.
 
-- Поиск города и отображение:
-  - текущей температуры, состояния, ветра;
-  - почасового прогноза на 24 часа;
-  - прогноза на несколько дней.
-- Блок «местное время» с тикающими часами по данным API (кастомный хук `useCityClock`).
-- Качество воздуха (AQI) и ключевые показатели (PM2.5, PM10, NO₂, O₃, SO₂, CO).
-- История запросов и избранные города с сохранением в `localStorage`.
-- Переключатель единиц измерения (°C/м/с ↔ °F/mph).
-- Переключатель светлой/тёмной темы с сохранением выбора пользователя. [web:100][web:107]
+Качество воздуха (AQI) и основные загрязнители (PM2.5, PM10, NO₂, O₃, SO₂, CO).
 
-## Локальный запуск
+Местное время и часовой пояс выбранного города.
 
-```bash
-git clone https://github.com/Alla161/Weather-app.git
-cd Weather-app
+Переключение единиц измерения: °C / м/с и °F / mph.
+
+Избранные города (сохранение в localStorage, быстрый выбор).
+
+История запросов с быстрым переключением и очисткой.
+
+Тёмная/светлая тема с сохранением выбора.
+
+Локализация (i18n)
+Поддержка двух языков интерфейса: русский / английский (react-i18next).
+
+Переведены заголовки, подписи, ошибки, кнопки и описания погодных состояний (weather codes).
+
+Формат времени и дат автоматически подстраивается под выбранный язык.
+
+Используемые API
+Open‑Meteo Forecast API — текущая погода, почасовой и дневной прогноз.
+
+Open‑Meteo Air Quality API — индекс качества воздуха и компоненты.
+
+Open‑Meteo Geocoding API — поиск городов и координаты.
+
+Локальный запуск
+bash
 npm install
-
-# режим разработки
 npm run dev
-
-# продакшн-сборка
-npm run build
-npm run preview
-
-Тестирование
-npm test
-
-<<<<<<< HEAD
-Структура проекта
-src/
-  App.jsx
-  main.jsx
-  index.css
-  components/
-    Header.jsx
-    Footer.jsx
-    CitySearch.jsx
-    Favorites.jsx
-    History.jsx
-    OpenWeather.jsx
-    HourlyForecast.jsx
-    WeatherForecast.jsx
-    AirQuality.jsx
-    LocalTimeBlock.jsx
-    SkeletonCard.jsx
-  hooks/
-    useTheme.js
-    useCityClock.js
-    useLocationHistory.js
-  utils/
-    getWeatherIconByCode.js
-    getWeatherBackgroundByCode.js
-=======
-## Структура проекта (основное)
-
-- `src/App.jsx` — главный компонент приложения.
-- `src/components/CitySearch.jsx` — поиск города и выбор локации.
-- `src/components/OpenWeather.jsx` — блок текущей погоды.
-- `src/components/HourlyForecast.jsx` — почасовой прогноз.
-- `src/components/WeatherForecast.jsx` — прогноз на несколько дней.
-- `src/components/AirQuality.jsx` — качество воздуха.
-- `src/components/History.jsx` — история последних городов.
-- `src/components/Favorites.jsx` — избранные города.
-- `src/components/SkeletonCard.jsx` — скелетоны загрузки.
-- `src/hooks/useLocationHistory.js` — кастомный хук для истории.
-- `src/confing/keyConst.js` — константы и ключи.
-
-## Деплой
-
-Приложение можно задеплоить, например, на Vercel или Netlify.  
-После деплоя добавь сюда ссылку:
-
-> Live demo: `[https://your-app-name.vercel.app]`
->>>>>>> af8f1050dad9fd7caccb236bdeab6d868f6d3813
+Приложение откроется по адресу, который покажет Vite (обычно http://localhost:5173/).
+​
