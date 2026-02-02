@@ -1,18 +1,22 @@
+import { useTranslation } from 'react-i18next';
+
 export function History({ items, onSelect, onClear, activeLocation }) {
+  const { t } = useTranslation();
+
   if (!items.length) return null;
 
   return (
     <div className="mb-4">
       <div className="flex items-center justify-between mb-1">
         <div className="text-xs text-slate-600 dark:text-slate-300">
-          Недавние запросы:
+          {t('historyTitle')}
         </div>
         <button
           type="button"
           onClick={onClear}
           className="text-[10px] text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
         >
-          Очистить
+          {t('historyClear')}
         </button>
       </div>
       <div className="flex flex-wrap gap-2">

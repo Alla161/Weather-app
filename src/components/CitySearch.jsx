@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 export function CitySearch({ onSelect }) {
+  const { t, i18n } = useTranslation();
   const [search, setSearch] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -23,7 +25,7 @@ export function CitySearch({ onSelect }) {
           params: {
             name: trimmed,
             count: 5,
-            language: 'ru',
+            language: i18n.language?.startsWith('en') ? 'en' : 'ru',
           },
         }
       );
@@ -68,7 +70,7 @@ export function CitySearch({ onSelect }) {
         <input
           type="text"
           className="flex-1 px-3 py-2 rounded-lg bg-slate-700 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-sky-500"
-          placeholder="Введите город, например: Moscow"
+          placeholder={t('citySearchPlaceholder')}
           value={search}
           onChange={(e) => fetchSuggestions(e.target.value)}
         />
@@ -76,13 +78,13 @@ export function CitySearch({ onSelect }) {
           type="submit"
           className="px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-600 font-semibold"
         >
-          Найти
+          {t('citySearchButton')}
         </button>
       </form>
 
       {loading && (
         <div className="text-xs text-slate-300 mb-1">
-          Поиск городов...
+          {t('citySearchLoading')}
         </div>
       )}
 

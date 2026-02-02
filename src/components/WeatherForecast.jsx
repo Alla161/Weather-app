@@ -1,11 +1,13 @@
 import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { SkeletonCard } from './SkeletonCard';
-import { WEATHER_CODE_LABELS } from '../confing/keyConst';
+import { WEATHER_CODE_LABELS_RU, WEATHER_CODE_LABELS_EN } from '../confing/keyConst';
 import { getWeatherBackgroundByCode, getWeatherIconByCode } from '../utils/getWeatherIcon';
 import { ErrorCard } from './ErrorCard';
+import { useTranslation } from 'react-i18next';
 
 export function WeatherForecast({ location, units }) {
+  const { t, i18n } = useTranslation();
   const [items, setItems] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -33,7 +35,7 @@ export function WeatherForecast({ location, units }) {
       const daily = res.data.daily;
 
       if (!daily || !daily.time || !daily.temperature_2m_max) {
-        setError('Нет данных прогноза');
+        setError(t('dailyNoData'));
         return;
       }
 
@@ -46,11 +48,11 @@ export function WeatherForecast({ location, units }) {
 
       setItems(days.slice(0, 5));
     } catch (err) {
-      setError('Не удалось загрузить прогноз');
+      setError(t('dailyError'));
     } finally {
       setLoading(false);
     }
-  }, [location]);
+  }, [location, t]);
 
   useEffect(() => {
     fetchForecast();
@@ -74,23 +76,26 @@ export function WeatherForecast({ location, units }) {
   if (!items.length) return null;
 
   const tempUnitLabel = units === 'metric' ? 'C' : 'F';
+  const locale = i18n.language?.startsWith('en') ? 'en-US' : 'ru-RU';
+  const isEn = i18n.language?.startsWith('en');
+  const labelsMap = isEn ? WEATHER_CODE_LABELS_EN : WEATHER_CODE_LABELS_RU;
 
   return (
     <div className="mt-6">
       <h2 className="text-lg font-semibold mb-2 text-slate-900 dark:text-slate-100">
-        Прогноз на несколько дней
+        {t('dailyTitle')}
       </h2>
       <div className="grid grid-cols-2 gap-3">
         {items.map((item) => {
           const date = new Date(item.date);
-          const day = date.toLocaleDateString('ru-RU', {
+          const day = date.toLocaleDateString(locale, {
             weekday: 'short',
             day: 'numeric',
             month: 'short',
           });
 
           const label =
-            WEATHER_CODE_LABELS[item.weathercode] || 'Погода';
+            labelsMap[item.weathercode] || t('dailyGenericLabel');
 
           const iconEmoji = getWeatherIconByCode
             ? getWeatherIconByCode(item.weathercode)
@@ -135,7 +140,7 @@ export function WeatherForecast({ location, units }) {
                 {Math.round(tempMax)}°{tempUnitLabel}
               </div>
               <div className="text-xs text-slate-700 dark:text-slate-200">
-                Мин: {Math.round(tempMin)}°{tempUnitLabel}
+                {t('dailyMinLabel')}: {Math.round(tempMin)}°{tempUnitLabel}
               </div>
             </div>
           );

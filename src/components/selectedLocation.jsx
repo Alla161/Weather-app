@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const FAVORITES_KEY = 'weather_favorites';
 
 export function Favorites({ selectedLocation, onSelect }) {
+  const { t } = useTranslation();
+
   const [favorites, setFavorites] = useState(() => {
     if (typeof window === 'undefined') return [];
     try {
@@ -29,7 +32,7 @@ export function Favorites({ selectedLocation, onSelect }) {
         (item) =>
           item.lat === selectedLocation.lat &&
           item.lon === selectedLocation.lon &&
-          item.label === selectedLocation.label
+          item.label === selectedLocation.label,
       );
 
       if (exists) {
@@ -39,7 +42,7 @@ export function Favorites({ selectedLocation, onSelect }) {
               item.lat === selectedLocation.lat &&
               item.lon === selectedLocation.lon &&
               item.label === selectedLocation.label
-            )
+            ),
         );
       }
 
@@ -53,7 +56,7 @@ export function Favorites({ selectedLocation, onSelect }) {
       (item) =>
         item.lat === selectedLocation.lat &&
         item.lon === selectedLocation.lon &&
-        item.label === selectedLocation.label
+        item.label === selectedLocation.label,
     );
 
   return (
@@ -64,7 +67,9 @@ export function Favorites({ selectedLocation, onSelect }) {
             className="px-3 py-1 text-xs rounded-full border border-slate-300 dark:border-slate-500 text-slate-800 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors"
             onClick={toggleFavorite}
           >
-            {isCurrentFavorite ? 'Убрать из избранного' : 'В избранное'}
+            {isCurrentFavorite
+              ? t('favoritesRemove')
+              : t('favoritesAdd')}
           </button>
         </div>
       )}
@@ -72,7 +77,7 @@ export function Favorites({ selectedLocation, onSelect }) {
       {favorites.length > 0 && (
         <>
           <h2 className="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400 mb-1">
-            Избранные города
+            {t('favoritesTitle')}
           </h2>
           <div className="flex flex-wrap gap-2">
             {favorites.map((item) => (

@@ -11,6 +11,7 @@ import { LocalTimeBlock } from './components/LocalTimeBlock';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { useTheme } from './hooks/useTheme';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -18,26 +19,28 @@ function App() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [units, setUnits] = useState('metric');
   const [localTime, setLocalTime] = useState(() => {
-  if (typeof window === 'undefined') return null;
-  try {
-    const saved = window.localStorage.getItem('weather_localTime');
-    return saved ? JSON.parse(saved) : null;
-  } catch {
-    return null;
-  }
-});
+    if (typeof window === 'undefined') return null;
+    try {
+      const saved = window.localStorage.getItem('weather_localTime');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
 
-useEffect(() => {
-  if (!localTime) return;
-  try {
-    window.localStorage.setItem('weather_localTime', JSON.stringify(localTime));
-  } catch {
-    
-  }
-}, [localTime]);
+  useEffect(() => {
+    if (!localTime) return;
+    try {
+      window.localStorage.setItem('weather_localTime', JSON.stringify(localTime));
+    } catch {
+      
+    }
+  }, [localTime]);
 
   const { history, addToHistory, clearHistory } = useLocationHistory();
   const { theme } = useTheme();
+  const { t, i18n } = useTranslation();
+
   const isDark = theme === 'dark';
 
   useEffect(() => {
@@ -60,7 +63,8 @@ useEffect(() => {
   };
 
   const now = new Date();
-  const nowLabel = now.toLocaleString('ru-RU', {
+  const locale = i18n.language?.startsWith('en') ? 'en-US' : 'ru-RU';
+  const nowLabel = now.toLocaleString(locale, {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -83,21 +87,21 @@ useEffect(() => {
         <div className="w-full max-w-md bg-white/90 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700/60">
           <div className="animate-[fadeInUp_0.35s_ease-out]">
             <h1 className="text-2xl font-bold mb-1 text-center flex items-center justify-center gap-2 text-slate-900 dark:text-slate-50">
-              <span>Прогноз погоды по городам</span>
+              <span>{t('appMainTitle')}</span>
               <span className="text-amber-300 text-2xl">🌤️</span>
             </h1>
 
             {selectedLocation && (
               <p className="text-xs text-slate-600 dark:text-slate-300 text-center">
-                Текущая погода и прогноз для города {selectedLocation.label}
+                {t('appSubForCity', { city: selectedLocation.label })}
               </p>
             )}
 
             <p className="text-[11px] text-slate-500 dark:text-slate-400 text-center mb-1">
-              Обновлено: {nowLabel}
+              {t('appUpdatedAt')} {nowLabel}
             </p>
             <p className="text-[11px] text-slate-500 dark:text-slate-400 text-center mb-2">
-              Почасовой и подробный прогноз на ближайшие дни.
+              {t('appSubDetails')}
             </p>
 
             <LocalTimeBlock localTime={localTime} />
@@ -111,7 +115,7 @@ useEffect(() => {
                 }`}
                 onClick={() => setUnits('metric')}
               >
-                °C, м/с
+                {t('unitsMetricLabel')}
               </button>
               <button
                 className={`px-2 py-1 text-xs rounded-full border ${
@@ -121,7 +125,7 @@ useEffect(() => {
                 }`}
                 onClick={() => setUnits('imperial')}
               >
-                °F, mph
+                {t('unitsImperialLabel')}
               </button>
             </div>
 

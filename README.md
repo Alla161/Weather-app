@@ -1,6 +1,6 @@
 # WeatherNow — прогноз погоды по городам
 
-Одностраничное веб‑приложение прогноза погоды: текущие условия, почасовой и дневной прогноз, качество воздуха и местное время для любых городов. [web:100][web:104]
+Одностраничное веб‑приложение прогноза погоды: текущие условия, почасовой и дневной прогноз, качество воздуха и местное время для любых городов.
 
 ## Демо
 
@@ -12,7 +12,7 @@
 - **Стили:** Tailwind CSS (light/dark тема)
 - **HTTP:** axios
 - **Тесты:** Vitest, @testing-library/react, @testing-library/jest-dom
-- **API:** Open‑Meteo, OpenWeather (air pollution API) [web:100][web:107]
+- **API:** Open‑Meteo, OpenWeather (air pollution API)
 
 ## Основные возможности
 
@@ -24,7 +24,7 @@
 - Качество воздуха (AQI) и ключевые показатели (PM2.5, PM10, NO₂, O₃, SO₂, CO).
 - История запросов и избранные города с сохранением в `localStorage`.
 - Переключатель единиц измерения (°C/м/с ↔ °F/mph).
-- Переключатель светлой/тёмной темы с сохранением выбора пользователя. [web:100][web:107]
+- Переключатель светлой/тёмной темы с сохранением выбора пользователя.
 
 ## Локальный запуск
 
@@ -40,53 +40,5 @@ npm run dev
 npm run build
 npm run preview
 
-Тестирование
+# тестирование
 npm test
-
-<<<<<<< HEAD
-Структура проекта
-src/
-  App.jsx
-  main.jsx
-  index.css
-  components/
-    Header.jsx
-    Footer.jsx
-    CitySearch.jsx
-    Favorites.jsx
-    History.jsx
-    OpenWeather.jsx
-    HourlyForecast.jsx
-    WeatherForecast.jsx
-    AirQuality.jsx
-    LocalTimeBlock.jsx
-    SkeletonCard.jsx
-  hooks/
-    useTheme.js
-    useCityClock.js
-    useLocationHistory.js
-  utils/
-    getWeatherIconByCode.js
-    getWeatherBackgroundByCode.js
-=======
-## Структура проекта (основное)
-
-- `src/App.jsx` — главный компонент приложения.
-- `src/components/CitySearch.jsx` — поиск города и выбор локации.
-- `src/components/OpenWeather.jsx` — блок текущей погоды.
-- `src/components/HourlyForecast.jsx` — почасовой прогноз.
-- `src/components/WeatherForecast.jsx` — прогноз на несколько дней.
-- `src/components/AirQuality.jsx` — качество воздуха.
-- `src/components/History.jsx` — история последних городов.
-- `src/components/Favorites.jsx` — избранные города.
-- `src/components/SkeletonCard.jsx` — скелетоны загрузки.
-- `src/hooks/useLocationHistory.js` — кастомный хук для истории.
-- `src/confing/keyConst.js` — константы и ключи.
-
-## Деплой
-
-Приложение можно задеплоить, например, на Vercel или Netlify.  
-После деплоя добавь сюда ссылку:
-
-> Live demo: `[https://your-app-name.vercel.app]`
->>>>>>> af8f1050dad9fd7caccb236bdeab6d868f6d3813

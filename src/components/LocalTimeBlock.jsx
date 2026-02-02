@@ -1,15 +1,20 @@
 import { useCityClock } from '../hooks/useCityClock';
+import { useTranslation } from 'react-i18next';
 
 export function LocalTimeBlock({ localTime }) {
+  const { t, i18n } = useTranslation();
   const now = useCityClock(localTime?.iso);
 
   if (!localTime || !localTime.iso || !now) return null;
 
-  const timeStr = now.toLocaleTimeString('ru-RU', {
+  const locale = i18n.language?.startsWith('en') ? 'en-US' : 'ru-RU';
+
+  const timeStr = now.toLocaleTimeString(locale, {
     hour: '2-digit',
     minute: '2-digit',
   });
-  const dateStr = now.toLocaleDateString('ru-RU', {
+
+  const dateStr = now.toLocaleDateString(locale, {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -22,7 +27,7 @@ export function LocalTimeBlock({ localTime }) {
       </div>
       <div className="flex-1">
         <div className="text-xs uppercase tracking-wide text-slate-600 dark:text-slate-400">
-          Местное время города
+          {t('localTimeTitle')}
         </div>
         <div className="text-lg font-semibold leading-tight">
           {timeStr}

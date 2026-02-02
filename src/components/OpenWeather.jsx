@@ -1,11 +1,13 @@
 import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { SkeletonCard } from './SkeletonCard';
-import { WEATHER_CODE_LABELS } from '../confing/keyConst';
+import { WEATHER_CODE_LABELS_RU, WEATHER_CODE_LABELS_EN } from '../confing/keyConst';
 import { getWeatherBackgroundByCode, getWeatherIconByCode } from '../utils/getWeatherIcon';
 import { ErrorCard } from './ErrorCard';
+import { useTranslation } from 'react-i18next';
 
 export function OpenWeather({ location, units, onTimeUpdate }) {
+  const { t, i18n } = useTranslation();
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -31,12 +33,12 @@ export function OpenWeather({ location, units, onTimeUpdate }) {
       const timezone = res.data.timezone;
 
       if (!current) {
-        setError('Нет данных о текущей погоде');
+        setError(t('currentWeatherNoData'));
         return;
       }
 
       setWeather({
-        name: location.label || 'Текущая локация',
+        name: location.label || t('currentLocationName'),
         temp: current.temperature_2m,
         windSpeed: current.wind_speed_10m,
         weatherCode: current.weather_code,
@@ -49,11 +51,11 @@ export function OpenWeather({ location, units, onTimeUpdate }) {
         });
       }
     } catch (err) {
-      setError('Не удалось загрузить текущую погоду');
+      setError(t('currentWeatherError'));
     } finally {
       setLoading(false);
     }
-  }, [location, onTimeUpdate]);
+  }, [location, onTimeUpdate, t]);
 
   useEffect(() => {
     fetchWeather();
@@ -62,7 +64,7 @@ export function OpenWeather({ location, units, onTimeUpdate }) {
   if (!location) {
     return (
       <p className="text-sm text-slate-600 dark:text-slate-300">
-        Выберите город, чтобы увидеть погоду.
+        {t('currentWeatherPrompt')}
       </p>
     );
   }
@@ -77,9 +79,12 @@ export function OpenWeather({ location, units, onTimeUpdate }) {
 
   if (!weather) return null;
 
-  const desc = WEATHER_CODE_LABELS[weather.weatherCode] || 'Погода';
+  const isEn = i18n.language?.startsWith('en');
+  const labelsMap = isEn ? WEATHER_CODE_LABELS_EN : WEATHER_CODE_LABELS_RU;
 
-  // фон по коду погоды + light/dark
+  const desc =
+    labelsMap[weather.weatherCode] || t('currentWeatherGenericLabel');
+
   const bgClass = getWeatherBackgroundByCode
     ? getWeatherBackgroundByCode(weather.weatherCode)
     : 'bg-slate-200 dark:bg-slate-700';
@@ -95,7 +100,12 @@ export function OpenWeather({ location, units, onTimeUpdate }) {
     units === 'metric' ? weather.windSpeed : weather.windSpeed * 2.23694;
 
   const tempUnitLabel = units === 'metric' ? 'C' : 'F';
-  const windUnitLabel = units === 'metric' ? 'м/с' : 'mph';
+  const windUnitLabel =
+    units === 'metric'
+      ? isEn
+        ? 'm/s'
+        : 'м/с'
+      : 'mph';
 
   return (
     <div
@@ -127,7 +137,9 @@ export function OpenWeather({ location, units, onTimeUpdate }) {
 
       <div className="mt-3 grid grid-cols-2 gap-2 text-sm opacity-90">
         <div>
-          <span className="font-semibold">Ветер:</span>{' '}
+          <span className="font-semibold">
+            {t('currentWeatherWindLabel')}{' '}
+          </span>
           {Math.round(windValue)} {windUnitLabel}
         </div>
       </div>

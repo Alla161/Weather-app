@@ -11,7 +11,6 @@ export function useCityClock(initialIso) {
       return;
     }
 
-    // базовое время из API
     setNow(new Date(initialIso));
 
     const interval = setInterval(() => {

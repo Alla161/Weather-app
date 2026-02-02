@@ -1,15 +1,17 @@
 import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { SkeletonCard } from './SkeletonCard';
-import { WEATHER_CODE_LABELS } from '../confing/keyConst';
+import { WEATHER_CODE_LABELS_RU, WEATHER_CODE_LABELS_EN } from '../confing/keyConst';
 import {
   getWeatherBackgroundByCode,
   getWeatherIconByCode,
 } from '../utils/getWeatherIcon';
 import { ErrorCard } from './ErrorCard';
+import { useTranslation } from 'react-i18next';
 
 
 export function HourlyForecast({ location, units }) {
+  const { t, i18n } = useTranslation();
   const [items, setItems] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -39,19 +41,19 @@ export function HourlyForecast({ location, units }) {
         !hourly.temperature_2m ||
         !hourly.weathercode
       ) {
-        setError('Нет данных почасового прогноза');
+        setError(t('hourlyNoData'));
         return;
       }
 
       const now = Date.now();
 
       const hours = hourly.time.map((timeStr, index) => {
-        const t = new Date(timeStr);
+        const tDate = new Date(timeStr);
         return {
-          time: t,
+          time: tDate,
           temp: hourly.temperature_2m[index],
           weathercode: hourly.weathercode[index],
-          diffMs: t.getTime() - now,
+          diffMs: tDate.getTime() - now,
         };
       });
 
@@ -62,11 +64,11 @@ export function HourlyForecast({ location, units }) {
 
       setItems(next24);
     } catch (err) {
-      setError('Не удалось загрузить почасовой прогноз');
+      setError(t('hourlyError'));
     } finally {
       setLoading(false);
     }
-  }, [location]);
+  }, [location, t]);
 
   useEffect(() => {
     fetchHourly();
@@ -85,22 +87,25 @@ export function HourlyForecast({ location, units }) {
   if (!items.length) return null;
 
   const tempUnitLabel = units === 'metric' ? 'C' : 'F';
+  const locale = i18n.language?.startsWith('en') ? 'en-US' : 'ru-RU';
+  const isEn = i18n.language?.startsWith('en');
+  const labelsMap = isEn ? WEATHER_CODE_LABELS_EN : WEATHER_CODE_LABELS_RU;
 
   return (
     <div className="mt-6">
       <h2 className="text-lg font-semibold mb-2 text-slate-900 dark:text-slate-100">
-        Почасовой прогноз (24 часа)
+        {t('hourlyTitle')}
       </h2>
 
       <div className="flex gap-2 overflow-x-auto pb-2">
         {items.map((item) => {
-          const hourLabel = item.time.toLocaleTimeString('ru-RU', {
+          const hourLabel = item.time.toLocaleTimeString(locale, {
             hour: '2-digit',
             minute: '2-digit',
           });
 
           const label =
-            WEATHER_CODE_LABELS[item.weathercode] || 'Погода';
+            labelsMap[item.weathercode] || t('hourlyGenericLabel');
 
           const iconEmoji = getWeatherIconByCode
             ? getWeatherIconByCode(item.weathercode)
